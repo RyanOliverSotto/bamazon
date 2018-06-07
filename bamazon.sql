@@ -188,10 +188,11 @@ CREATE TABLE products (
 CREATE TABLE departments (
     department_id INT NOT NULL AUTO_INCREMENT,
     department_name VARCHAR (45) NOT NULL,
-    over_head_costs DECIMAL (10,2)
+    over_head_costs DECIMAL (10,2),
+    PRIMARY KEY (department_id)
 );
 
-INSERT INTO departments (department_name, price, over_head_costs)
+INSERT INTO departments (department_name, over_head_costs)
 VALUES ("Electronics", 12000), 
 ("Clothing and Shoes", 4000),
 ("Home and Garden and Kitchen", 8000),
@@ -201,7 +202,9 @@ VALUES ("Electronics", 12000),
 INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales )
 VALUES ("Samsung HD TV", "Electronics",750.00, 6, 13000),
 ("Canon Powershot", "Electronics", 75.00, 3, 12500),
-("HP Office Pro Printer", 250, 7, 14000);
+("HP Office Pro Printer", "Electronics", 250, 7, 14000),
+("Dell All-In-One PC", "Electronics", 550, 3, 12000),
+("Shiatsu Vibra Chair", "Electronics", 150, 5, 12100);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales )
 VALUES ("Nike Sneakers", "Clothing and Shoes",120.00, 3, 4400),
