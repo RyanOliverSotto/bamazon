@@ -7,7 +7,6 @@ var table = new Table({
   colWidths: [20, 40, 15, 15]
 });
 
-
 // CLI Text colors I like to use 
 var FgBlue = "\x1b[34m";
 var FgWhite = "\x1b[0m";
@@ -83,18 +82,19 @@ function goShopping() {
 
       // if customer wants to purchase more than available in stock, user will be asked if he wants to make another purchase
       if (chosenItem.stock_quantity < parseInt(answer.quantity)) {
-        console.log(`${FgCyan} Insufficient quantity! ${FgWhite}`);
+        console.log("Insufficient quantity!");
 
-        repeat();
+        again();
       }
       // if the customer wants to purchase an amount that is in stock, the remaining stock quantity will be updated in the database and the price presented to the customer
       else {
-        var query = connection.query("UPDATE Products SET ? WHERE ?", [{ stock_quantity: updateStock }, { item_id: chosenItem.item_id }], function (err, res) {
-          if (err) throw err;
-          console.log(`${FgCyan} Purchase successful! ${FgWhite}`);
+        connection.query("UPDATE Products SET ? WHERE ?", [{ stock_quantity: updateStock }, { item_id: chosenItem.item_id }], function (err, res) {
+          console.log("Purchase successful!");
+
           var Total = (parseFloat(answer.quantity) * chosenItem.price).toFixed(2);
-          console.log("Your total is $" + FgGreen + Total);
-          repeat();
+          console.log("Your total is $" + Total);
+
+          again();
         });
       }
 
@@ -104,7 +104,7 @@ function goShopping() {
 
 } // goShopping function
 
-function repeat() {
+function again() {
   inquirer.prompt({
     // ask user if he wants to purchase another item
     name: "repurchase",
@@ -116,8 +116,7 @@ function repeat() {
       goShopping();
     }
     else {
-      console.log(`${FgMagenta} Thanks for shopping for us. Have a great day! ${FgWhite}`)
-      connection.end();
+      console.log("Thanks for shopping for us. Have a great day!")
     }
   });
 }
