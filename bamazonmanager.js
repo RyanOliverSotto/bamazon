@@ -51,17 +51,17 @@ function manageStore(){
             switch (resp.mainMenu) {
                 case "View Products for Sale":
                   viewProducts();
-                  console.log ("view products");
+                  //console.log ("view products");
                   break;
           
                 case "View Low Inventory":
-                  //multiSearch();
-                  console.log ("view low");
+                  viewLow();
+                 //console.log ("view low");
                   break;
           
                 case "Add to Inventory":
-                  //rangeSearch();
-                  console.log ("add inv");                  
+                  addInv();
+                 // console.log ("add inv");                  
                   break;
           
                 case "Add New Product":
@@ -71,12 +71,6 @@ function manageStore(){
                 }
         })
     }//End connection.query
-
-
-
-
-
-
 
 
 function viewProducts(){
@@ -90,7 +84,83 @@ function viewProducts(){
         }
         console.log(table.toString());  
         connection.close;    
+        repeat();
     })
-    
 };
 
+function viewLow(){
+    connection.query("SELECT * FROM products where stock_quantity < 5", function (err, res) {
+        // console.log(res);
+        if (err) throw err;
+        // display products and price to user with low inventory
+        for (var i = 0; i < res.length; i++) 
+        {
+          table.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity])
+        }
+        console.log(table.toString());  
+        connection.close;    
+        repeat();
+    })
+};
+
+function addInv(){
+    inquirer.prompt([{
+    //ask the user the ID and the Quantity of the Item she wants for that row
+    name:"item_id",
+    type: "input",
+    message: "Enter the product_id you wish to have replenished.",
+    validate: function (value) {
+        if (isNaN(value) == false) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    },
+    {
+        name:"updateStock",
+        type: "input",
+        message: "Enter the amount that you need in stock.",
+        validate: function (value) {
+            if (isNaN(value) == false) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+    }]).then(function(answer){
+        console.log (`Qty ${answer.updateStock} ID: ${answer.item_id}`);
+        connection.query(
+            "UPDATE products SET ? WHERE ?",
+        [
+            {
+                stock_quantity: answer.updateStock
+            },
+            {
+                item_id: answer.item_id
+            }
+            
+        ]
+        )
+        console.log("Inventory has been updated!\n");
+        repeat();
+    })
+};
+
+function repeat() {
+    inquirer.prompt({
+      // ask user if he wants to purchase another item
+      name: "manage",
+      type: "list",
+      choices: ["Yes", "No"],
+      message: "Would you like to continue managing the store?"
+    }).then(function (answer) {
+      if (answer.manage == "Yes") {
+        manageStore();
+      }
+      else {
+        console.log(`${FgMagenta} Have a great day! ${FgWhite}`)
+        connection.end();
+      }
+    });
+}
