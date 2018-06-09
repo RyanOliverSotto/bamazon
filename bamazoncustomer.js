@@ -33,14 +33,13 @@ connection.connect(function (err) {
 
 goShopping();
 
-// Step 8 - displays products in database table, and then ask user which product he wants to purchase - write hoisted functions so they can be defined later in the file
+//displays products in database table
 function goShopping() {
   connection.query('SELECT * FROM Products', function (err, res) {
     // console.log(res);
 
     // display products and price to user
     for (var i = 0; i < res.length; i++) {
-      //console.log(`Item ID: ${res[i].item_id} | ${res[i].product_name} | Price:  ${res[i].price}  | Stock:  ${res[i].stock_quantity}`);
       table.push([res[i].item_id, res[i].product_name, res[i].price, res[i].stock_quantity])
     }
     console.log(table.toString());
