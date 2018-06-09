@@ -65,8 +65,8 @@ function manageStore(){
                   break;
           
                 case "Add New Product":
-                  //songSearch();
-                  console.log ("add new");    
+                  addProd();
+                  //console.log ("add new");    
                   break;
                 }
         })
@@ -139,13 +139,94 @@ function addInv(){
             {
                 item_id: answer.item_id
             }
-            
+
         ]
         )
         console.log("Inventory has been updated!\n");
         repeat();
     })
 };
+
+function addProd(){
+    console.log ("here");
+    //repeat();
+    inquirer.prompt([/* Pass your questions in here */
+    {name: "item",
+    type: "input",
+    message: "Enter the name of the product to add to the inventory.",
+    validate: function (value) {
+        if (value == null || value == "") {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    },
+    {
+    name:"department",
+    type: "list",
+    choices: ["Electronics","Clothing and Shoes","Home and Garden and Kitchen","Beauty and Health"],
+    message: "Select appropriate department for the new product."
+    },
+    {
+        name:"price",
+        type: "input",
+        message: "Enter an appropriate price for a single new product.",
+        validate: function (value) {
+            if (value == null || value == "") {
+              return false;
+            } else {
+              return true;
+            }
+        }        
+    },
+    {
+        name:"qnty",
+        type: "input",
+        message: "Enter the amount of products to stock in our inventory.",
+        validate: function (value) {
+            if (value == null || value == "") {
+              return false;
+            } else {
+              return true;
+            }
+          }        
+    },
+    {
+        name:"sales",
+        type: "input",
+        message: "Enter the amount of product sales for this item collection.",
+        validate: function (value) {
+            if (value == null || value == "") {
+              return false;
+            } else {
+              return true;
+            }
+          }   
+    }
+    ]).then(function(answers) {
+        console.log("Here!");
+        
+        var query = connection.query(
+            "INSERT INTO products SET ?",
+            {
+              product_name: answers.item,
+              department_name: answers.department,
+              price: answers.price,
+              stock_quantity: answers.qnty,
+              product_sales: answers.sales
+            },
+            function(err, res) {
+            if (err) throw err;
+              console.log(res.affectedRows + " NEW row affected. Product inserted!\n");
+              // Call updateProduct AFTER the INSERT completes
+              //updateProduct();
+            }
+          );
+
+    });
+
+}
 
 function repeat() {
     inquirer.prompt({
