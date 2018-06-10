@@ -47,7 +47,7 @@ function manageStore(){
                 "Add New Product"]
   
         }]).then (function(resp){
-            console.log ("here")
+            //console.log ("here")
             switch (resp.mainMenu) {
                 case "View Products for Sale":
                   viewProducts();
@@ -148,8 +148,12 @@ function addInv(){
 };
 //Research a way to dynamically fill the department choices used by list
 function addProd(){
-    console.log ("here");
+    //console.log ("here");
     //repeat();
+    //Get a list of valid departments
+    //var deptList = []
+    //deptList = fetchDept();
+    //console.log(deptList);
     inquirer.prompt([/* Pass your questions in here */
     {name: "item",
     type: "input",
@@ -166,6 +170,7 @@ function addProd(){
     name:"department",
     type: "list",
     choices: ["Electronics","Clothing and Shoes","Home and Garden and Kitchen","Beauty and Health"],
+    //choices: [fetchDept()],
     message: "Select appropriate department for the new product."
     },
     {
@@ -205,7 +210,7 @@ function addProd(){
           }   
     }
     ]).then(function(answers) {
-        console.log("Here!");
+        //console.log("Here!");
         
         var query = connection.query(
             "INSERT INTO products SET ?",
@@ -226,6 +231,23 @@ function addProd(){
 
     });
 
+}
+
+function fetchDept(){
+  connection.query("SELECT department_name from departments", function (err, res) {
+    //console.log(res);
+    var deptArray=[]
+    if (err) throw err;
+    // display products and price to user with low inventory
+    for (var i = 0; i < res.length; i++) 
+    {
+      deptArray.push(res[i].department_name);
+    }
+    console.log(deptArray);
+    return deptArray;  
+    //connection.close;    
+    //repeat();
+})
 }
 
 function repeat() {
