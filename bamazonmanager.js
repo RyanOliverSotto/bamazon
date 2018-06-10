@@ -146,7 +146,7 @@ function addInv(){
         repeat();
     })
 };
-
+//Research a way to dynamically fill the department choices used by list
 function addProd(){
     console.log ("here");
     //repeat();
@@ -219,8 +219,8 @@ function addProd(){
             function(err, res) {
             if (err) throw err;
               console.log(res.affectedRows + " NEW row affected. Product inserted!\n");
-              // Call updateProduct AFTER the INSERT completes
-              //updateProduct();
+             connection.end;
+             repeat();
             }
           );
 
