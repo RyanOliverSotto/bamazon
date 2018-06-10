@@ -48,7 +48,7 @@ function goShopping() {
     inquirer.prompt([{
       // ask user to choose a product to purchase
       name: "choice",
-      type: "rawlist",
+      type: "list",
       message: "What would you like to buy?",
       choices: function (value) {
         var choiceArray = [];

@@ -6,7 +6,7 @@ var table = new Table({
   head: ['Item ID', 'Item', 'Department', 'Price', 'Qnty'],
   colWidths: [20, 40, 35, 15, 15]
 });
-
+var dept = [];
 
 // CLI Text colors I like to use 
 var FgBlue = "\x1b[34m";
@@ -148,12 +148,21 @@ function addInv(){
 };
 //Research a way to dynamically fill the department choices used by list
 function addProd(){
-    //console.log ("here");
-    //repeat();
-    //Get a list of valid departments
-    //var deptList = []
-    //deptList = fetchDept();
-    //console.log(deptList);
+//Grab a list of all valid departments from department table
+
+connection.query("SELECT department_name FROM departments", function (err, res) {
+  // console.log(res);
+  if (err) throw err;
+  // display products and price to user with low inventory
+  for (var i = 0; i < res.length; i++) 
+  {
+      dept.push(res[i].department_name);
+  }
+  console.log(dept.toString());  
+  connection.close; 
+})
+
+
     inquirer.prompt([/* Pass your questions in here */
     {name: "item",
     type: "input",
@@ -169,8 +178,8 @@ function addProd(){
     {
     name:"department",
     type: "list",
-    choices: ["Electronics","Clothing and Shoes","Home and Garden and Kitchen","Beauty and Health"],
-    //choices: [fetchDept()],
+    //choices: ["Electronics","Clothing and Shoes","Home and Garden and Kitchen","Beauty and Health"],
+    choices: dept,
     message: "Select appropriate department for the new product."
     },
     {
@@ -233,22 +242,6 @@ function addProd(){
 
 }
 
-function fetchDept(){
-  connection.query("SELECT department_name from departments", function (err, res) {
-    //console.log(res);
-    var deptArray=[]
-    if (err) throw err;
-    // display products and price to user with low inventory
-    for (var i = 0; i < res.length; i++) 
-    {
-      deptArray.push(res[i].department_name);
-    }
-    console.log(deptArray);
-    return deptArray;  
-    //connection.close;    
-    //repeat();
-})
-}
 
 function repeat() {
     inquirer.prompt({

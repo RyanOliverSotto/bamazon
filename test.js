@@ -1,6 +1,8 @@
 var mysql = require('mysql');
 var inquirer = require('inquirer');
-
+var dept = []
+  var testList = ["apples", "oranges", "pears", "grapes"];
+//Declare the connection object
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -15,42 +17,36 @@ var connection = mysql.createConnection({
     console.log("connected as id " + connection.threadId);
   });
   
+  connection.query("SELECT department_name FROM departments", function (err, res) {
+    // console.log(res);
+    if (err) throw err;
+    // display products and price to user with low inventory
+    for (var i = 0; i < res.length; i++) 
+    {
+        dept.push(res[i].department_name);
+    }
+    //console.log(dept.toString());  
+    connection.close; 
+})
 
-  var testList = ["apples", "oranges", "pears", "grapes"];
-
-    connection.query("SELECT department_name from departments", function (err, res) {
-      //console.log(res);
-      var deptArray=[]
-      if (err) throw err;
-      // display products and price to user with low inventory
-      for (var i = 0; i < res.length; i++) 
-      {
-        deptArray.push(res[i].department_name);
-      }
-      //console.log(deptArray.toString());
-      return deptArray;  
-      //connection.close;    
-
-
-
-      function doIt(){
-      inquirer.prompt([{
-        name:"choice",
-        type:"rawlist",
-        message:"What dept?",
-        choices: deptArray.toString()
-      }]).then( function (answer){
-        console.log (`I love the ${answer.choice} department`);
-
-
-
-      })
-
-}
-
-doIt();
-
-      //repeat();
-  })
+inquirer.prompt([
+{name: "dept",
+type:"input",
+message:"Enter the name of the department to add",
+validate: function (value) {
+    if (value == null || value == "") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+},
+{
+   name:"deptList",
+   type:"list",
+   choices:dept
+}]).then(function(ans){
+    console.log (ans.deptList);
+})
   
 
