@@ -76,7 +76,7 @@ function goShopping() {
           var chosenItem = res[i];
         }
       }
-          //console.log(chosenItem.product_sales);
+      //console.log(chosenItem.product_sales);
       // calculate remaining stock if purchase occurs
       var updateStock = parseInt(chosenItem.stock_quantity) - parseInt(answer.quantity);
       var pSales = parseFloat(chosenItem.product_sales).toFixed(2);
@@ -89,15 +89,15 @@ function goShopping() {
       }
       // if the customer wants to purchase an amount that is in stock, the remaining stock quantity will be updated in the database and the price presented to the customer
       else {
-        
+
         // Challenge 3 logic. Get total from new purchase, fetch current sales from table and add together.
-        
+
         var Total = (parseFloat(answer.quantity) * chosenItem.price).toFixed(2);
         //console.log(`Total: ${Total}`);
         //console.log (parseFloat(Total) + parseFloat(pSales)).toFixed(2);
         var pTotal = (parseFloat(Total) + parseFloat(pSales)).toFixed(2);
         //console.log(chosenItem.product_Sales);
-        var query = connection.query("UPDATE Products SET ?, ? WHERE ?", [{ stock_quantity: updateStock }, {product_sales: pTotal},{ item_id: chosenItem.item_id }], function (err, res) {
+        var query = connection.query("UPDATE Products SET ?, ? WHERE ?", [{ stock_quantity: updateStock }, { product_sales: pTotal }, { item_id: chosenItem.item_id }], function (err, res) {
           if (err) throw err;
           console.log(`${FgCyan} Purchase successful! ${FgWhite}`);
           //var Total = (parseFloat(answer.quantity) * chosenItem.price).toFixed(2);

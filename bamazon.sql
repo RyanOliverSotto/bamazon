@@ -226,3 +226,9 @@ VALUES ("Nike 15lb Kettlebell", "Beauty and Health", 50.00, 6, 9000),
 ("Indian Charcoal Mud Mask", "Beauty and Health", 15.00, 2, 9200),
 ("Ultraviolet Teeth Whitening System", "Beauty and Health", 35.00, 2, 9200),
 ("Adjustable Dumb Bell", "Beauty and Health", 50.00, 3, 9300);
+
+SELECT B. department_id, A.department_name, b.over_head_costs, SUM(A.product_sales) AS Total_Sales_By_Dept, SUM(A.product_sales) - B.over_head_costs AS Profit
+FROM products A, departments B
+WHERE a.department_name = b.department_name
+GROUP BY department_name
+ORDER BY department_id;
