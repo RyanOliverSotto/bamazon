@@ -1,7 +1,7 @@
 # bamazon
 Northwestern Coding Bootcamp Spring 2018 Homework Assignment Week12: NodeJS | MySQL | Inquirer & CLI-Table NPM
 
-##Challenge01: bamazoncustmoer.js
+## Challenge01: bamazoncustomer.js
 
 ![capture](https://user-images.githubusercontent.com/35242379/41208257-22f2e62a-6ce7-11e8-8c45-8b981db7dca4.JPG)
 
