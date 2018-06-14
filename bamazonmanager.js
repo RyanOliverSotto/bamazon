@@ -34,7 +34,7 @@ connection.connect(function (err) {
 manageStore();
 
 function manageStore() {
-  //ask the manager for input
+  //Ask the manager for input
   inquirer.prompt([{
     name: "mainMenu",
     type: "list",
@@ -91,7 +91,7 @@ function viewLow() {
   connection.query("SELECT * FROM products where stock_quantity < 5", function (err, res) {
     // console.log(res);
     if (err) throw err;
-    // display products and price to user with low inventory
+    // Display products and price to user with low inventory
     for (var i = 0; i < res.length; i++) {
       table.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity])
     }
@@ -103,7 +103,7 @@ function viewLow() {
 
 function addInv() {
   inquirer.prompt([{
-    //ask the user the ID and the Quantity of the Item she wants for that row
+    //Ask the user the ID and the Quantity of the Item he wants for that row
     name: "item_id",
     type: "input",
     message: "Enter the product_id you wish to have replenished.",
@@ -128,6 +128,7 @@ function addInv() {
     }
   }]).then(function (answer) {
     console.log(`Qty ${answer.updateStock} ID: ${answer.item_id}`);
+    //Prevent SQL injection hacking
     connection.query(
       "UPDATE products SET ? WHERE ?",
       [
@@ -140,14 +141,12 @@ function addInv() {
 
       ]
     )
-    console.log("Inventory has been updated!\n");
+    console.log(FgGreen + "Inventory has been updated!\n");
     repeat();
   })
 };
-//Research a way to dynamically fill the department choices used by list
 function addProd() {
-  //Grab a list of all valid departments from department table
-
+  //Grab a list of all valid departments from department table. Will use this later in the choice.
   connection.query("SELECT department_name FROM departments", function (err, res) {
     // console.log(res);
     if (err) throw err;
@@ -176,7 +175,6 @@ function addProd() {
     {
       name: "department",
       type: "list",
-      //choices: ["Electronics","Clothing and Shoes","Home and Garden and Kitchen","Beauty and Health"],
       choices: dept,
       message: "Select appropriate department for the new product."
     },
@@ -230,7 +228,7 @@ function addProd() {
       },
       function (err, res) {
         if (err) throw err;
-        console.log(res.affectedRows + " NEW row affected. Product inserted!\n");
+        console.log(FgGreen + res.affectedRows + FgCyan + " NEW row affected. Product inserted!\n");
         connection.end;
         repeat();
       }
@@ -243,7 +241,7 @@ function addProd() {
 
 function repeat() {
   inquirer.prompt({
-    // ask user if he wants to purchase another item
+    // Ask user if he wants to purchase another item
     name: "manage",
     type: "list",
     choices: ["Yes", "No"],

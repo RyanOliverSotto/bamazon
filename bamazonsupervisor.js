@@ -32,7 +32,7 @@ connection.connect(function (err) {
 manageRegion();
 
 function manageRegion() {
-    //ask the manager for input
+    //Ask the manager for input
     inquirer.prompt([{
         name: "mainMenu",
         type: "list",
@@ -60,7 +60,7 @@ function manageRegion() {
 
 function viewProducts() {
     strSQL = "Select B. department_id, A.department_name, b.over_head_costs, sum(A.product_sales) as Total_Sales_By_Dept,"
-    strSQL += " sum(A.product_sales) - B.over_head_costs as Profit from products A, departments B ";
+    strSQL += "sum(A.product_sales) - B.over_head_costs as Profit from products A, departments B ";
     strSQL += "where a.department_name = b.department_name Group by department_name ORder by department_id ";
     connection.query(strSQL, function (err, res) {
         // console.log(res);
@@ -121,12 +121,9 @@ function addDept() {
 }
 
 
-
-
-
 function repeat() {
     inquirer.prompt({
-        // ask user if he wants to purchase another item
+        // Ask user if he wants to purchase another item
         name: "manage",
         type: "list",
         choices: ["Yes", "No"],
